@@ -2,9 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 // Trạng thái ban đầu
 const initialState = {
-  name: "",
-  email: "",
-  photo: "",
+  name: null,
+  email: null,
+  photo: null,
 };
 
 const userSlice = createSlice({
@@ -14,11 +14,14 @@ const userSlice = createSlice({
   // Reducer và hành động
   initialState,
   reducers: {
+    // caapj nhaatj thong tin nguoi dung khi login
     setUserLoginDetails: (state, action) => {
+      console.log("Setting user login details:", action.payload);
       state.name = action.payload.name;
       state.email = action.payload.email;
       state.photo = action.payload.photo;
     },
+    // xoa thong tin nguoi dung khi dang xuat
     setSignOut: (state) => {
       state.name = null;
       state.email = null;

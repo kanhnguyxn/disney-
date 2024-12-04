@@ -5,7 +5,14 @@ const Login = (props) => {
     <Container>
       <Content>
         <CTA>
-          <CTALogoOne src="/images/cta-logo-one.png" alt="" />
+          <CTALogoOne src="/images/cta-logo-one.svg" alt="" />
+          <SignUp>GET ALL THERE</SignUp>
+          <Description>
+            Get Premier Access to Raya and the Last Gragon for an additional fee
+            with a Disney+ subscription. AS of 03/06/21, the price of Disney+
+            and The Disney Bundle will increase by $1
+          </Description>
+          <CTALogoTwo src="/images/cta-logo-two.png" alt="" />
         </CTA>
         <BgImage />
       </Content>
@@ -38,7 +45,7 @@ const BgImage = styled.div`
   height: 100%;
   background-position: top;
   background-size: cover;
-  background-repeact: no-repeat;
+  background-repeat: no-repeat;
   background-image: url("/images/login-background.jpg");
   position: absolute;
   top: 0;
@@ -59,10 +66,8 @@ const CTA = styled.div`
   text-align: center;
   margin-right: auto;
   margin-left: auto;
-  transaction-timing-function: ease-out;
-  transaction opacity: 0.2s;
-  width:100%;
-
+  transition: opacity 0.2s ease-out;
+  width: 100%;
 `;
 const CTALogoOne = styled.img`
   margin-bottom: 12px;
@@ -72,4 +77,36 @@ const CTALogoOne = styled.img`
   width: 100%;
 `;
 
+const SignUp = styled.a`
+  font-weight: bold;
+  color: #f9f9f9;
+  background: #0063e5;
+  margin-bottom: 12px;
+  width: 50%;
+  letter-spacing: 1.5px;
+  font-size: 18px;
+  padding: 16.5px 0;
+  border: 1px solid transparent;
+  border-radius: 4px;
+
+  &:hover {
+    background: #0483ee;
+  }
+`;
+
+const Description = styled.p`
+  color: hsla(0, 0%, 95.3%, 1);
+  font-size: 11px;
+  margin: 0 0 24px;
+  line-height: 1.5;
+  letter-spacing: 1.5px;
+`;
+
+const CTALogoTwo = styled.img`
+  max-width: 600px;
+  margin-bottom: 20px;
+  display: inline-block;
+  vertical-align: bottom;
+  width: 100%;
+`;
 export default Login;

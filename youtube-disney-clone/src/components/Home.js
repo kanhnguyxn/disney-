@@ -22,7 +22,7 @@ const Home = (props) => {
       const newdisney = [];
       const trending = [];
       const originals = [];
-
+      // Lấy dữ liệu từ bộ sưu tập trong cơ sở dữ liệu
       const movieCollection = collection(db, "movies");
 
       // Lắng nghe sự thay đổi dữ liệu Firestore (realtime)
@@ -61,6 +61,8 @@ const Home = (props) => {
     if (userName) {
       fetchMovies();
     }
+
+    // useEffect sẽ được kích hoạt lại khi userName hoặc dispatch thay đổi.
   }, [userName, dispatch]);
 
   return (

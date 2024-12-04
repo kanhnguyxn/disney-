@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { auth } from "../firebase";
 import { useSelector } from "react-redux";
@@ -34,7 +35,7 @@ const Header = () => {
 
     // Cleanup the listener when the component unmounts
     return () => unsubscribe();
-  }, [navigate]);
+  }, [userName]);
 
   const setUser = (user) => {
     dispatch(
@@ -57,6 +58,7 @@ const Header = () => {
           <NavMenu>
             {list_nav.map((option) => (
               <a href={option.href} key={option.text}>
+                <Link to={option.to} />
                 <img src={option.src} alt={option.text} />
                 <span>{option.text}</span>
               </a>
@@ -76,31 +78,37 @@ const list_nav = [
     href: "/home",
     src: "/images/home-icon.svg",
     text: "Home",
+    to: "/home",
   },
   {
     href: "/search",
     src: "/images/search-icon.svg",
     text: "Search",
+    to: "/search",
   },
   {
     href: "/watchlist",
     src: "/images/watchlist-icon.svg",
     text: "Watchlist",
+    to: "/watchlist",
   },
   {
     href: "/originals",
     src: "/images/original-icon.svg",
     text: "Originals",
+    to: "/originals",
   },
   {
     href: "/movies",
     src: "/images/movie-icon.svg",
     text: "Movies",
+    to: "/movies",
   },
   {
     href: "/series",
     src: "/images/series-icon.svg",
     text: "Series",
+    to: "/series",
   },
 ];
 

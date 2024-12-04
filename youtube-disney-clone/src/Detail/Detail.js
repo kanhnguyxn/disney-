@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import db from "../firebase";
 
-const Detail = (props) => {
+const Detail = () => {
   const { id } = useParams();
   const [detailData, setdatailData] = useState({});
 

@@ -1,4 +1,4 @@
-import Frame_film from "./Frame_film";
+import Frame_film from "../components/Frame_film";
 import { useSelector } from "react-redux";
 import { selectNewDisney } from "../features/movies/movieSlice";
 

@@ -18,12 +18,13 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 
 // Khởi tạo các dịch vụ Firebase
+// getAuth và GoogleAuthProvider: Được sử dụng để xử lý xác thực, cụ thể là xác thực người dùng qua Google.
 const auth = getAuth(firebaseApp);
 const provider = new GoogleAuthProvider();
+// getFirestore: Khởi tạo Firestore của Firebase, một dịch vụ cơ sở dữ liệu NoSQL để lưu trữ dữ liệu.
 const db = getFirestore(firebaseApp);
+//getStorage: Khởi tạo Firebase Storage để lưu trữ và truy xuất nội dung do người dùng tạo ra (như hình ảnh, video, v.v.).
 const storage = getStorage(firebaseApp);
-
-console.log("Firestore initialized:", db);
 
 // Export các dịch vụ Firebase
 export { auth, provider, storage };

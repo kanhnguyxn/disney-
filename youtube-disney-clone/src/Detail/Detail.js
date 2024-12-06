@@ -1,48 +1,79 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { doc, getDoc } from "firebase/firestore";
-import db from "../firebase";
+import { useSelector } from "react-redux";
+import {
+  selectRecommend,
+  selectNewDisney,
+  selectOriginal,
+  selectPopular,
+  selectTrending,
+} from "../features/movies/movieSlice";
 
 const Detail = () => {
   const { id } = useParams();
-  const [detailData, setdatailData] = useState({});
+  const [detailData, setDetailData] = useState({});
+
+  // Use useSelector to get the different movie lists
+  const recommendMovies = useSelector(selectRecommend);
+  const newDisneyMovies = useSelector(selectNewDisney);
+  const originalMovies = useSelector(selectOriginal);
+  const popularMovies = useSelector(selectPopular);
+  const trendingMovies = useSelector(selectTrending);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = () => {
       try {
-        const docRef = doc(db, "movies", id);
-        const data = await getDoc(docRef);
-        if (data.exists()) {
-          // cap nhat state voi du lieu tu Firebase
-          setdatailData(data.data());
+        // Combine all movie lists into one array
+        const moviesList = [
+          ...recommendMovies,
+          ...newDisneyMovies,
+          ...originalMovies,
+          ...popularMovies,
+          ...trendingMovies,
+        ];
+        console.log(moviesList);
+        // Find the movie by ID
+        const movie = moviesList.find(
+          (movie) => parseInt(movie.id) === parseInt(id)
+        );
+
+        if (movie) {
+          setDetailData(movie); // Update state with movie details
         } else {
-          console.log("No such document in Firebase");
+          console.log("Movie not found");
         }
       } catch (error) {
-        console.log("Error getting document:", error);
+        console.log("Error fetching movie details:", error);
       }
     };
+
     if (id) {
       fetchData();
     }
-  }, [id]);
+  }, [
+    id,
+    recommendMovies,
+    newDisneyMovies,
+    originalMovies,
+    popularMovies,
+    trendingMovies,
+  ]);
+
   return (
     <Container>
       <Background>
-        <img src={detailData.backgroundImg} alt={detailData.title} />
+        <img src={detailData.backdrop_path} alt={detailData.title} />
       </Background>
-      <ImageTitle>
-        <img src={detailData.titleImg} />
-      </ImageTitle>
+      <Title>{detailData.title}</Title>
       <ContentMeta>
         <Control>
           <Player>
-            <img src="/images/play-icon-black.png" />
+            <img src="/images/play-icon-black.png" alt="Play" />
             <span>Play</span>
           </Player>
           <Trailer>
-            <img src="/images/play-icon-white.png" />
+            <img src="/images/play-icon-white.png" alt="Trailer" />
             <span>Trailer</span>
           </Trailer>
           <AddList>
@@ -50,11 +81,13 @@ const Detail = () => {
             <span />
           </AddList>
           <Groupwatch>
-            <img src="/images/group-icon.png" />
+            <img src="/images/group-icon.png" alt="Group Watch" />
           </Groupwatch>
         </Control>
-        <SubTitle>{detailData.subTitle}</SubTitle>
-        <Description>{detailData.description}</Description>
+        <SubTitle>
+          Date: {detailData.release_date} - Rating: {detailData.vote_average}
+        </SubTitle>
+        <Description>{detailData.overview}</Description>
       </ContentMeta>
     </Container>
   );
@@ -62,8 +95,7 @@ const Detail = () => {
 
 const Container = styled.div`
   position: relative;
-  min-height: calc(100vh-250px);
-  /* xuwr lys khi noi dung tran khoi man hinh (visible khong cat | hidden cat | scroll cuon) */
+  min-height: calc(100vh - 250px);
   overflow-x: hidden;
   display: block;
   top: 72px;
@@ -82,63 +114,58 @@ const Background = styled.div`
   img {
     width: 100%;
     height: 100%;
-
     @media (max-width: 1024px) {
-      /* width của một phần tử về giá trị ban đầu (initial value) */
       width: initial;
     }
   }
 `;
 
-const ImageTitle = styled.div`
-  align-items: center;
+const Title = styled.div`
+  font-size: 40px;
+  font-weight: 1000;
   display: flex;
-  -webkit-box-pack: start;
   justify-content: flex-start;
-  height: 30vw;
+  align-items: end;
+  height: 50vh;
   min-height: 170px;
   padding-bottom: 24px;
   width: 100%;
-
-  img {
-    max-width: 600px;
-    min-width: 200px;
-    width: 35vw;
+  @media (max-width: 768px) {
+    font-size: 34px;
+    font-weight: 800;
   }
 `;
 
 const ContentMeta = styled.div`
-  max-width: 874px;
+  max-width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: start;
 `;
+
 const Control = styled.div`
-  align-items: center;
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
-  margin: 24px 0xp;
+  margin: 24px 0;
   min-height: 56px;
+  align-items: center;
 `;
 
 const Player = styled.button`
-  font-size: 15px;
-  margin: 0px 22px 0px 0px;
-  padding: 0px 24px;
-  height: 56px;
-  align-items: center;
   border-radius: 4px;
-  cursor: pointer;
+  font-size: 15px;
+  margin-right: 22px;
+  padding: 0 24px;
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: center;
   letter-spacing: 1.8px;
-  text-align: center;
   text-transform: uppercase;
   background: rgb(249, 249, 249);
   border: none;
   color: rgb(0, 0, 0);
+  cursor: pointer;
 
   img {
     width: 32px;
@@ -177,14 +204,14 @@ const AddList = styled.div`
 
     &:first-child {
       height: 2px;
-      transform: translate(1px, 0px) rotate(0deg);
       width: 16px;
+      transform: translate(1px, 0px) rotate(0deg);
     }
 
     &:nth-child(2) {
       height: 16px;
-      transform: translate(-8px, 0) rotate(0deg);
       width: 2px;
+      transform: translate(-8px, 0px) rotate(0deg);
     }
   }
 `;
@@ -208,21 +235,25 @@ const Groupwatch = styled.div`
 const SubTitle = styled.div`
   color: rgb(249, 249, 249);
   font-size: 15px;
+  font-weight: 600;
   min-height: 20px;
-  padding: 16px 0px 0px;
+  padding: 16px 0 0;
 
   @media (max-width: 768px) {
     font-size: 12px;
   }
 `;
+
 const Description = styled.div`
   line-height: 1.4;
   font-size: 20px;
-  padding: 16px 0px;
+  padding: 16px 0;
   color: rgb(249, 249, 249);
   text-align: left;
+
   @media (max-width: 768px) {
     font-size: 14px;
   }
 `;
+
 export default Detail;

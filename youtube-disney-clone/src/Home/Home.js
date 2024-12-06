@@ -1,80 +1,39 @@
 import styled from "styled-components";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+
+import FetchFilms from "../components/fetchFilms";
+
 import ImgSlider from "./imgSlice";
 import Viewer from "./Viewers";
 import Recommends from "./Recommends";
 import NewDisney from "./NewDisney";
 import Trending from "./Trending";
 import Originals from "./Originals";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import db from "../firebase";
-import { collection, onSnapshot } from "firebase/firestore";
-import { setMovie } from "../features/movies/movieSlice";
-import { selectUserName } from "../features/user/userSlice";
 
-const Home = (props) => {
+const Home = () => {
   const dispatch = useDispatch();
-  const userName = useSelector(selectUserName);
+  const [load, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchMovies = async () => {
-      const recommend = [];
-      const newdisney = [];
-      const trending = [];
-      const originals = [];
-      // Lấy dữ liệu từ bộ sưu tập trong cơ sở dữ liệu
-      const movieCollection = collection(db, "movies");
+  FetchFilms(dispatch)
+    .then(() => setLoading(false))
+    .catch((error) => {
+      console.log(error);
+      setLoading(true);
+    });
 
-      // Lắng nghe sự thay đổi dữ liệu Firestore (realtime)
-      onSnapshot(movieCollection, (snapshot) => {
-        snapshot.docs.forEach((doc) => {
-          const data = doc.data();
-          switch (data.type) {
-            case "recommend":
-              recommend.push({ id: doc.id, ...data });
-              break;
-            case "new":
-              newdisney.push({ id: doc.id, ...data });
-              break;
-            case "trending":
-              trending.push({ id: doc.id, ...data });
-              break;
-            case "original":
-              originals.push({ id: doc.id, ...data });
-              break;
-            default:
-              break;
-          }
-        });
-
-        dispatch(
-          setMovie({
-            recommend: recommend,
-            newdisney: newdisney,
-            trending: trending,
-            original: originals,
-          })
-        );
-      });
-    };
-
-    if (userName) {
-      fetchMovies();
-    }
-
-    // useEffect sẽ được kích hoạt lại khi userName hoặc dispatch thay đổi.
-  }, [userName, dispatch]);
-
-  return (
-    <Container>
-      <ImgSlider />
-      <Viewer />
-      <Recommends />
-      <NewDisney />
-      <Trending />
-      <Originals />
-    </Container>
-  );
+  if (!load) {
+    return (
+      <Container>
+        <ImgSlider />
+        <Viewer />
+        <Recommends />
+        <NewDisney />
+        <Trending />
+        <Originals />
+      </Container>
+    );
+  }
 };
 
 const Container = styled.main`

@@ -23,12 +23,10 @@ const Header = () => {
     // theo doi phien dawng nhap cua nguoi dung
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
-        console.log("User logged in", user);
         navigate("/home");
         setUser(user);
         // Navigate to /home if user is authenticated
       } else {
-        console.log("No user logged in");
         navigate("/");
       }
     });
@@ -52,7 +50,7 @@ const Header = () => {
       <Logo>
         <img src="/images/logo.svg" alt="Disney+" />
       </Logo>
-      {console.log("username", userName)}
+
       {userName ? (
         <>
           <NavMenu>

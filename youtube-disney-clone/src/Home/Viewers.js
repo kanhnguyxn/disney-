@@ -55,7 +55,7 @@ const Container = styled.div`
 
   @media (max-width: 768px) {
     /* Khi màn hình nhỏ hơn hoặc bằng 768px, Grid Layout sẽ chỉ có 1 cột (thay vì 5 cột). */
-    grid-template-columns: repeat(1, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 `;
 

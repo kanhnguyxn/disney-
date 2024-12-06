@@ -1,11 +1,10 @@
-import Frame_film from "../components/Frame_film";
 import { useSelector } from "react-redux";
 import { selectRecommend } from "../features/movies/movieSlice";
+import Slick from "../components/slickItems";
 
-const Recommends = (props) => {
+const Recommends = () => {
   const recommend = useSelector(selectRecommend);
-  const title = "Recommended for You";
-  return <Frame_film title={title} movies={recommend} />;
+  return <Slick title="Recommended for You" data={recommend} />;
 };
 
 export default Recommends;

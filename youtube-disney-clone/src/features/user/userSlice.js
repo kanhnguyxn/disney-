@@ -16,7 +16,6 @@ const userSlice = createSlice({
   reducers: {
     // caapj nhaatj thong tin nguoi dung khi login
     setUserLoginDetails: (state, action) => {
-      console.log("Setting user login details:", action.payload);
       state.name = action.payload.name;
       state.email = action.payload.email;
       state.photo = action.payload.photo;

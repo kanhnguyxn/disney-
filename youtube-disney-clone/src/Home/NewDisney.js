@@ -1,11 +1,11 @@
-import Frame_film from "../components/Frame_film";
 import { useSelector } from "react-redux";
 import { selectNewDisney } from "../features/movies/movieSlice";
+import Slick from "../components/slickItems";
 
-const NewDisney = (props) => {
-  const newDisney = useSelector(selectNewDisney);
-  const title = "New to Disney+";
-  return <Frame_film title={title} movies={newDisney} />;
+const NewDisney = () => {
+  const newdisney = useSelector(selectNewDisney);
+
+  return <Slick title="New to Disney+" data={newdisney} />;
 };
 
 export default NewDisney;

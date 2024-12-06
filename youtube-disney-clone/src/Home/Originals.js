@@ -1,11 +1,10 @@
-import Frame_film from "../components/Frame_film";
 import { useSelector } from "react-redux";
 import { selectOriginal } from "../features/movies/movieSlice";
+import Slick from "../components/slickItems";
 
-const Trending = (props) => {
-  const title = "Originals";
+const Originals = () => {
   const original = useSelector(selectOriginal);
-  return <Frame_film title={title} movies={original} />;
+  return <Slick title="Originals" data={original} />;
 };
 
-export default Trending;
+export default Originals;
